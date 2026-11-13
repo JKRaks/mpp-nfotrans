@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "enabled": false,
+  "global_hook": false,
+  "active_provider": "siliconflow_hunyuan",
+  "provider_configs": {
+    "siliconflow_hunyuan": {
+      "endpoint": "https://api.siliconflow.cn/v1/chat/completions",
+      "model": "tencent/Hunyuan-MT-7B"
+    }
+  },
+  "policies": [
+    {"id": "default", "name": "简体中文简介", "target_language": "zh-CN", "fields": ["plot", "outline"], "mode": "translate", "fallback_languages": ["zh-TW", "en-US", "original"]},
+    {"id": "traditional", "name": "繁体中文含宣传语", "target_language": "zh-TW", "fields": ["plot", "outline", "tagline"], "mode": "translate", "fallback_languages": ["zh-CN", "en-US", "original"]}
+  ],
+  "default_policy": "default",
+  "timeout": 30,
+  "concurrency": 1,
+  "source_hours": 24,
+  "missing_days": 7,
+  "cache_days": 180,
+  "history_days": 30
+}

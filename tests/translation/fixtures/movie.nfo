@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<movie>
+  <!-- Must survive a partial translation -->
+  <title>A Journey</title>
+  <originaltitle>A Journey</originaltitle>
+  <plot>A traveler returns home.</plot>
+  <outline></outline>
+  <tagline>Every journey has a beginning.</tagline>
+  <uniqueid type="tmdb" default="true">42</uniqueid>
+  <actor><name>Ada Example</name><role>Traveler</role></actor>
+  <ratings><rating name="tmdb"><value>7.0</value><votes>120</votes></rating></ratings>
+  <custom preserved="yes"><![CDATA[keep <this>]]></custom>
+</movie>

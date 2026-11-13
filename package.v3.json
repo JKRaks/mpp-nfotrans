@@ -1,0 +1,17 @@
+{
+  "MetadataTranslate": {
+    "name": "元数据翻译",
+    "description": "补齐 TMDB 缺失语言，支持 DeepL、硅基流动混元、OpenRouter、Gemini 和通用接口。",
+    "labels": "媒体库,刮削,翻译",
+    "version": "1.0.1",
+    "icon": "scraper.png",
+    "author": "NfoCheck Contributors",
+    "level": 1,
+    "system_version": ">=3.2.5",
+    "release": false,
+    "history": {
+      "v1.0.1": "配置弹窗主动关闭、服务与密钥状态说明、响应式布局优化。",
+      "v1.0.0": "多翻译策略、单一全局服务、五类接口、官方 NFO 候选增强、缓存与预览；源码交付，未测试。"
+    }
+  }
+}
