@@ -50,7 +50,7 @@ class MetadataTranslate(_PluginBase):
     plugin_name = "元数据翻译"
     plugin_desc = "补齐 TMDB 缺失语言；支持 DeepL、混元、OpenRouter、Gemini 和通用兼容接口。"
     plugin_icon = "scraper.png"
-    plugin_version = "1.0.1"
+    plugin_version = "1.0.3"
     plugin_author = "NfoCheck Contributors"
     author_url = ""
     plugin_config_prefix = "metadatatranslate_"

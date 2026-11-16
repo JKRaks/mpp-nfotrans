@@ -4,4 +4,4 @@ import type {HostProps} from '../types'
 defineProps<HostProps>()
 const emit = defineEmits(['close'])
 </script>
-<template><App :api="api" :plugin-id="pluginId" @close="emit('close')" /></template>
+<template><App config-view :api="api" :plugin-id="pluginId" @close="emit('close')" /></template>
