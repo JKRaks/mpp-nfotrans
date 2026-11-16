@@ -1,4 +1,5 @@
 """Version 1 translation extension contract; no LLM-specific fields."""
+
 import hashlib
 import json
 import time
@@ -10,7 +11,9 @@ ADAPTER_VERSION = 1
 
 
 def digest(value):
-    return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    return hashlib.sha256(
+        json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
 
 
 class TranslationError(Exception):
@@ -19,8 +22,13 @@ class TranslationError(Exception):
         self.code, self.retryable, self.retry_after = code, retryable, retry_after
 
     def result(self):
-        return {"status": "failed", "error_code": self.code, "message": str(self), "retryable": self.retryable,
-                "next_retry_at": time.time() + (self.retry_after or 60) if self.retryable else 0}
+        return {
+            "status": "failed",
+            "error_code": self.code,
+            "message": str(self),
+            "retryable": self.retryable,
+            "next_retry_at": time.time() + (self.retry_after or 60) if self.retryable else 0,
+        }
 
 
 class Stop:

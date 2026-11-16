@@ -1,21 +1,48 @@
 """Provider-independent configuration. Credentials never enter this model."""
+
 import re
 from typing import Literal
 from urllib.parse import urlsplit
 from pydantic import BaseModel, Field, model_validator
 
-FIELDS = {"title": "标题(title)", "plot": "剧情简介(plot)", "outline": "简短摘要(outline)", "tagline": "宣传语(tagline)"}
-PROVIDERS = {"deepl": "DeepL", "siliconflow_hunyuan": "硅基流动 · Hunyuan-MT", "openrouter": "OpenRouter", "gemini_native": "Gemini API", "chat_completions": "通用 Chat Completions"}
-DEFAULT_URLS = {"deepl": "https://api-free.deepl.com/v2/translate", "siliconflow_hunyuan": "https://api.siliconflow.cn/v1/chat/completions", "openrouter": "https://openrouter.ai/api/v1/chat/completions", "gemini_native": "https://generativelanguage.googleapis.com", "chat_completions": ""}
+FIELDS = {
+    "title": "标题(title)",
+    "plot": "剧情简介(plot)",
+    "outline": "简短摘要(outline)",
+    "tagline": "宣传语(tagline)",
+}
+PROVIDERS = {
+    "deepl": "DeepL",
+    "siliconflow_hunyuan": "硅基流动 · Hunyuan-MT",
+    "openrouter": "OpenRouter",
+    "gemini_native": "Gemini API",
+    "chat_completions": "通用 Chat Completions",
+}
+DEFAULT_URLS = {
+    "deepl": "https://api-free.deepl.com/v2/translate",
+    "siliconflow_hunyuan": "https://api.siliconflow.cn/v1/chat/completions",
+    "openrouter": "https://openrouter.ai/api/v1/chat/completions",
+    "gemini_native": "https://generativelanguage.googleapis.com",
+    "chat_completions": "",
+}
 
 
 def locale(value):
     value = value.strip().replace("_", "-")
-    aliases = {"zh": "zh-CN", "zh-hans": "zh-CN", "zh-hant": "zh-TW", "zh-cn": "zh-CN", "zh-tw": "zh-TW", "zh-hk": "zh-TW"}
+    aliases = {
+        "zh": "zh-CN",
+        "zh-hans": "zh-CN",
+        "zh-hant": "zh-TW",
+        "zh-cn": "zh-CN",
+        "zh-tw": "zh-TW",
+        "zh-hk": "zh-TW",
+    }
     if value.lower() in aliases:
         return aliases[value.lower()]
     parts = value.split("-")
-    return "-".join([parts[0].lower()] + [p.upper() if len(p) == 2 else p.title() for p in parts[1:]])
+    return "-".join(
+        [parts[0].lower()] + [p.upper() if len(p) == 2 else p.title() for p in parts[1:]]
+    )
 
 
 class ProviderConfig(BaseModel):
@@ -31,7 +58,14 @@ class ProviderConfig(BaseModel):
     def check(self):
         if self.endpoint:
             parsed = urlsplit(self.endpoint)
-            if parsed.scheme not in {"http", "https"} or not parsed.hostname or parsed.username or parsed.password or parsed.query or parsed.fragment:
+            if (
+                parsed.scheme not in {"http", "https"}
+                or not parsed.hostname
+                or parsed.username
+                or parsed.password
+                or parsed.query
+                or parsed.fragment
+            ):
                 raise ValueError("服务地址必须为不含凭据、查询参数和片段的 HTTP(S) 地址")
         if self.model and not re.fullmatch(r"[\w./:@+-]+", self.model):
             raise ValueError("模型 ID 格式无效")
@@ -43,7 +77,9 @@ class Policy(BaseModel):
     name: str = "简体中文补全"
     target_language: str = "zh-CN"
     fields: list[str] = Field(default_factory=lambda: ["plot", "outline"])
-    kinds: list[Literal["movie", "tv", "season", "episode"]] = Field(default_factory=lambda: ["movie", "tv", "season", "episode"])
+    kinds: list[Literal["movie", "tv", "season", "episode"]] = Field(
+        default_factory=lambda: ["movie", "tv", "season", "episode"]
+    )
     mode: Literal["source_only", "translate"] = "translate"
     fallback_languages: list[str] = Field(default_factory=lambda: ["zh-TW", "en-US", "original"])
     chinese_conversion: bool = True
@@ -57,8 +93,13 @@ class Policy(BaseModel):
         if not re.fullmatch(r"[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*", self.target_language):
             raise ValueError("目标语言代码无效")
         self.fields = list(dict.fromkeys(self.fields))
-        self.fallback_languages = list(dict.fromkeys(locale(x) if x != "original" else x for x in self.fallback_languages))
-        if any(x != "original" and not re.fullmatch(r"[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*", x) for x in self.fallback_languages):
+        self.fallback_languages = list(
+            dict.fromkeys(locale(x) if x != "original" else x for x in self.fallback_languages)
+        )
+        if any(
+            x != "original" and not re.fullmatch(r"[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*", x)
+            for x in self.fallback_languages
+        ):
             raise ValueError("备用语言代码无效")
         return self
 

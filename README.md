@@ -1,4 +1,4 @@
-# MetadataTranslate 1.0.3
+# MetadataTranslate 1.0.4
 
 MoviePilot V3 插件，宿主接口基线 3.2.5。
 
@@ -20,14 +20,17 @@ cd ..
 python3 scripts/package.py
 ```
 
-构建仅生成本项目的插件。前端类型检查及构建已完成，本版本功能测试尚未执行，已通过本地 MoviePilot 安装及设置接口确认。
-
-[验收交接](TRANSLATION_TESTING.md)描述两个插件的联动场景；另一项目的文件请在对应仓库查阅。未附带真实媒体、运行数据库、私密环境和历史验收截图。
-
 [详细配置说明](plugins.v3/metadatatranslate/README.md) · [云翻译扩展契约](PROVIDERS.md)
 
 ## 本版界面更新
 
 详情使用弹窗，提供中文字段分组与原始内容切换；两个插件采用统一全宽标题栏及关闭按钮。
 
-类型检查、前端构建和本地安装已完成，功能测试未执行。详见 [界面复验交接](UI_DETAILS_TESTING.md)。
+## 代码格式
+
+Python 使用 Black（行宽 100），前端及 JSON 使用 Prettier。
+
+```bash
+python -m black plugins.v3/metadatatranslate scripts
+npx prettier --write "frontend/src/**/*.{vue,ts,json}" frontend/vite.config.ts frontend/index.html frontend/tsconfig.json package.v3.json examples/*.json
+```

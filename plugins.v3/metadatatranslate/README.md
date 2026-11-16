@@ -1,6 +1,6 @@
 # 元数据翻译 MetadataTranslate 1.0.0
 
-MoviePilot V3 独立插件，为缺少目标语言的 TMDB 元数据提供文字补齐。宿主接口以 MoviePilot 3.2.5 为基线。本次交付源码，尚未运行测试、前端类型检查、构建或安装验收。
+MoviePilot V3 独立插件，为缺少目标语言的 TMDB 元数据提供文字补齐。宿主接口以 MoviePilot 3.2.5 为基线。
 
 ## 配置与使用
 
@@ -50,4 +50,4 @@ NfoCheck 未安装时独立插件仍可预览和增强官方管道；元数据�
 
 NFO 的 `outline` 没有对应 Emby 正文字段，仅修改它不新增元数据刷新任务。标题、简介、宣传语变化走原有 Emby 定向刷新，并分别验证 `Name`、`Overview`、`Taglines`。Emby 对本地元数据的采用仍由服务端设置决定。
 
-接口、错误分类和注入方式见 [PROVIDERS.md](PROVIDERS.md)；外部验收步骤见安装包内 `TRANSLATION_TESTING.md` 或仓库根目录同名文档。
+接口、错误分类和注入方式见 [PROVIDERS.md](PROVIDERS.md)。

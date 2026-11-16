@@ -10,8 +10,22 @@
     }
   },
   "policies": [
-    {"id": "default", "name": "简体中文简介", "target_language": "zh-CN", "fields": ["plot", "outline"], "mode": "translate", "fallback_languages": ["zh-TW", "en-US", "original"]},
-    {"id": "traditional", "name": "繁体中文含宣传语", "target_language": "zh-TW", "fields": ["plot", "outline", "tagline"], "mode": "translate", "fallback_languages": ["zh-CN", "en-US", "original"]}
+    {
+      "id": "default",
+      "name": "简体中文简介",
+      "target_language": "zh-CN",
+      "fields": ["plot", "outline"],
+      "mode": "translate",
+      "fallback_languages": ["zh-TW", "en-US", "original"]
+    },
+    {
+      "id": "traditional",
+      "name": "繁体中文含宣传语",
+      "target_language": "zh-TW",
+      "fields": ["plot", "outline", "tagline"],
+      "mode": "translate",
+      "fallback_languages": ["zh-CN", "en-US", "original"]
+    }
   ],
   "default_policy": "default",
   "timeout": 30,
