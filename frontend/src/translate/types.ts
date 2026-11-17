@@ -34,6 +34,7 @@ export interface TranslationConfig {
   history_days: number
 }
 export interface Settings {
+  revision: string
   config: TranslationConfig
   providers: Record<string, string>
   fields: Record<string, string>
@@ -72,4 +73,19 @@ export interface PreviewResult {
   changed_fields: string[]
   nfo: string
   record_id: number
+}
+export interface PreviewInput {
+  identity: {
+    kind: string
+    tmdb_id: number | null
+    season: number | null
+    episode: number | null
+    episode_group: string | null
+    title: string
+    original_language: string | null
+  }
+  nfo: string
+  policy_id: string
+  overwrite: boolean
+  force: boolean
 }

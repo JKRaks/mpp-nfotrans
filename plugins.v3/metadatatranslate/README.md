@@ -1,26 +1,26 @@
-# 元数据翻译 MetadataTranslate 1.0.0
+# 元数据翻译 MetadataTranslate
 
 MoviePilot V3 独立插件，为缺少目标语言的 TMDB 元数据提供文字补齐。宿主接口以 MoviePilot 3.2.5 为基线。
 
 ## 配置与使用
 
-1. 在“设置”分别保存所需服务的配置和 API 密钥，选择一个**全局当前服务**。全部策略使用这一服务；发生错误时不切换到其他服务。
-2. 在“翻译策略”设置目标语言、文字字段、媒体层级和备用语言顺序。默认目标 `zh-CN`，默认字段为剧情简介(plot)、简短摘要(outline)。标题(title)、宣传语(tagline)按需开启。
-3. 启用插件。可先使用“保存并测试当前服务”发送固定示例，再用明确的 TMDB 身份和粘贴的 NFO 预览候选。测试、预览可能产生 API 费用；预览不写媒体文件。
+1. 在“服务设置”选择**当前翻译服务**，填写对应的 API 密钥、模型或套餐；其他服务可在“其他服务配置”中管理。全部策略使用当前服务；发生错误时不切换到其他服务。
+2. 在“翻译策略”从模板创建策略，或展开现有策略编辑。默认目标 `zh-CN`，默认字段为剧情简介(plot)、简短摘要(outline)。标题(title)、宣传语(tagline)按需开启；备用语言顺序在高级选项中调整。复制策略生成新的 ID，编辑现有策略保留 ID。
+3. 启用插件后，可先“检查连接”，再用明确的 TMDB 身份和 NFO 内容生成预览，直接比较字段变化。存在未保存修改时，按钮会显示“保存并检查连接”或“保存并生成预览”；配置未变更时直接执行。连接检查、预览可能产生 API 费用；预览不写媒体文件。
 4. 如需批量修复现有旁挂文件，在 NfoCheck 1.2.0 配置语言条件和翻译动作。独立插件负责生成候选，NfoCheck 负责备份、文件冲突检查、原子提交、续跑和 Emby 同步。
 5. 如需增强以后由官方刮削生成的 NFO，可启用“官方 NFO 管道增强”。它调用宿主内置 NFO 生成模块，再修改选中的文字节点。与其他插件的 `metadata_nfo` 接管冲突时停用此入口，并显示冲突插件；NfoCheck 联动仍可单独使用。
 
 ## 服务配置
 
-| 服务 | 地址与模型 | 协议特点 |
+| 服务 | 地址与模型 | 配置提示 |
 | --- | --- | --- |
-| DeepL | Free / Pro 套餐选择；原生 `/v2/translate`；无需模型 ID | `DeepL-Auth-Key`，有序 text 数组，同来源语言分批，128 KiB 限制；按返回顺序对应字段 |
-| 硅基流动 · Hunyuan-MT | `https://api.siliconflow.cn/v1/chat/completions`；默认 `tencent/Hunyuan-MT-7B` | 专用翻译模型，每段一个 user 消息，直接返回纯文本，不发送 JSON 格式要求 |
-| OpenRouter | `https://openrouter.ai/api/v1/chat/completions`；填写模型 ID | Chat Completions；关闭失败上游回退，不提供备用模型；初始上游由 OpenRouter 选择 |
-| Gemini API | `https://generativelanguage.googleapis.com`；填写模型 ID；默认 `v1beta` | 原生 `generateContent`，`x-goog-api-key` 请求头；不是 Vertex AI 接口 |
-| 通用 Chat Completions | 填写完整 `/chat/completions` 地址和模型 ID | Bearer 认证；兼容服务，不要求使用 OpenAI |
+| DeepL | 选择 API Free / Pro 套餐；无需模型 ID | 使用对应套餐的 API 密钥 |
+| 硅基流动 · Hunyuan-MT | `https://api.siliconflow.cn/v1/chat/completions`；默认 `tencent/Hunyuan-MT-7B` | 使用纯文本翻译，无需设置 JSON 响应模式 |
+| OpenRouter | `https://openrouter.ai/api/v1/chat/completions`；填写模型 ID | 使用指定模型，失败后不自动切换模型或服务 |
+| Gemini API | `https://generativelanguage.googleapis.com`；填写模型 ID；默认 `v1beta` | 使用 Google AI Studio 创建的密钥，不适用于 Vertex AI |
+| 通用 Chat Completions | 填写完整 `/chat/completions` 地址和模型 ID | 地址、模型和密钥必须属于同一家兼容服务 |
 
-OpenRouter、Gemini 和通用接口可选提示词 JSON、JSON Object、JSON Schema。应选择所用模型支持的格式；参数不支持时记录失败，不自动改模型或换服务。Hunyuan 保留独立的纯文本适配，DeepL 保留云翻译原生适配。扩展其他云翻译服务见 [PROVIDERS.md](PROVIDERS.md)。
+OpenRouter、Gemini 和通用接口可在高级参数中选择提示词 JSON、JSON Object、JSON Schema。应选择所用模型支持的格式；参数不支持时记录失败，不自动改模型或换服务。
 
 默认单次翻译请求时限 30 秒、并发 1、每次输入上限 12,000 字符、输出上限 4,096 token。超出配置上限直接报告，不截掉原文。长文本可调整上限；模型仍可能拒绝或截断，截断结果不写入 NFO。
 
@@ -39,9 +39,10 @@ OpenRouter、Gemini 和通用接口可选提示词 JSON、JSON Object、JSON Sch
 ## 存储、停止和权限
 
 - 所有管理 API 要求 MoviePilot 管理员身份。密钥单独保存在插件数据目录 `secrets.json`，文件权限 0600；配置返回值只给出是否已设置。空输入保留旧密钥，显式删除后保存才移除。
-- `translation.sqlite3` 保存来源缓存、译文缓存和分页调用记录。默认来源缓存 24 小时、译文缓存 180 天、调用记录 30 天。缓存键包含服务、模型配置、适配器版本、媒体身份、语言、原文及实际发送的上下文。
+- 默认来源缓存 24 小时、译文缓存 180 天、调用记录 30 天，可在“请求与缓存”中调整或清理缓存。
 - 连接测试与预览会记录候选结果；“候选完成”不等于媒体文件已经写入。删除调用记录不删除缓存、媒体备份或 NfoCheck 待办。
-- 批次持有服务版本，运行中禁止保存设置或清缓存。停止信号阻止候选提交；正在等待的 HTTP 读取由超时结束。来源查询沿用宿主 TMDB 客户端的超时行为。
+- 调用记录支持单条或批量删除，确认后立即生效。删除默认策略前须选择新的默认策略，策略变更在保存配置后生效；NfoCheck 中的策略引用需要另行调整。
+- 任务运行中不能保存设置或清理缓存。停止后不会继续提交候选，正在等待的请求会在完成或超时后结束。
 - 全局管道增强失败时返回官方原始候选；该入口自身不写媒体文件，也不拥有 NfoCheck 的旁挂文件备份。现有媒体修复请使用 NfoCheck。
 
 ## 联动边界
@@ -49,5 +50,3 @@ OpenRouter、Gemini 和通用接口可选提示词 JSON、JSON Object、JSON Sch
 NfoCheck 未安装时独立插件仍可预览和增强官方管道；元数据翻译插件未安装、未启用或接口不兼容时，NfoCheck 的翻译任务显示原因，其他图片任务可继续。
 
 NFO 的 `outline` 没有对应 Emby 正文字段，仅修改它不新增元数据刷新任务。标题、简介、宣传语变化走原有 Emby 定向刷新，并分别验证 `Name`、`Overview`、`Taglines`。Emby 对本地元数据的采用仍由服务端设置决定。
-
-接口、错误分类和注入方式见 [PROVIDERS.md](PROVIDERS.md)。

@@ -50,8 +50,8 @@ class ClearCache(BaseModel):
 class MetadataTranslate(_PluginBase):
     plugin_name = "元数据翻译"
     plugin_desc = "补齐 TMDB 缺失语言；支持 DeepL、混元、OpenRouter、Gemini 和通用兼容接口。"
-    plugin_icon = "scraper.png"
-    plugin_version = "1.0.4"
+    plugin_icon = "https://raw.githubusercontent.com/JKRaks/mpp-nfotrans/main/plugins.v3/metadatatranslate/icon.png"
+    plugin_version = "1.1.2"
     plugin_author = "NfoCheck Contributors"
     author_url = ""
     plugin_config_prefix = "metadatatranslate_"
