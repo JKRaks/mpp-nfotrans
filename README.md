@@ -1,4 +1,4 @@
-# MetadataTranslate 1.1.2
+# MetadataTranslate 1.1.3
 
 MoviePilot V3 插件，宿主接口基线 3.2.5。
 
@@ -9,6 +9,8 @@ MoviePilot V3 插件，宿主接口基线 3.2.5。
 在 MoviePilot 插件市场添加仓库 `https://github.com/JKRaks/mpp-nfotrans`，安装 MetadataTranslate。仓库包含对应版本完整前端产物。翻译服务需要自行配置 API Key；不上传个人设置或密钥。
 
 [详细配置说明](plugins.v3/metadatatranslate/README.md)
+
+安装包可从 [Releases](https://github.com/JKRaks/mpp-nfotrans/releases) 下载；最新构建位于 [Actions](https://github.com/JKRaks/mpp-nfotrans/actions/workflows/package.yml) 成功运行记录的 Artifacts 中，保留 30 天。下载内容包含插件 ZIP 和 SHA256 校验文件。
 
 ## 本版界面更新
 
