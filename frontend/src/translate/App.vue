@@ -139,11 +139,8 @@ function close() {
       </div>
     </div>
     <DetailDialog
-      :opened="viewer.opened.value"
-      :title="viewer.title.value"
-      :loading="viewer.loading.value"
-      :error="viewer.error.value"
-      :data="viewer.data.value"
+      v-if="viewer.localSession.value"
+      :session="viewer.localSession.value"
       @close="viewer.close"
     />
   </main>
