@@ -135,8 +135,9 @@ onUnmounted(() => {
               class="text-button"
               :disabled="state.busy"
               @click="
-                state.showDetail('翻译调用详情', () =>
-                  state.api.get(state.url('detail'), { params: { id: row.id } }),
+                state.showDetail('翻译调用详情',
+                  () => state.api.get(state.url('detail'), { params: { id: row.id } }),
+                  row.summary,
                 )
               "
             >
